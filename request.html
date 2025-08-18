@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Request page</title>
+  <style>
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      color: #333;
+    }
+    .slideshow-container {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+    .slideshow-container img {
+      position: absolute;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slideshow-container img.active {
+      opacity: 1;
+    }
+     /* Header Stylghbes */
+    header {
+      background: linear-gradient(to right, #ff6a00, #ee0979);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+    header h1 { font-size: 1.8rem; }
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+    nav a:hover { text-decoration: underline; }
+
+    .one {
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      background-color: rgba(255, 255, 255, 0.9);
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .two {
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      background-color: rgba(255, 255, 255, 0.8);
+      margin: 20px auto;
+      max-width: 420px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .three {
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      background-color: rgba(255, 255, 255, 0.8);
+      margin: 20px auto;
+      max-width: 870px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6));
+      height: 500px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 0;
+    }
+    .hero h2{ font-size: 3rem; margin-bottom: 1rem; animation: fadeIn 1.5s ease-in; }
+    .hero p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; animation: fadeIn 2s ease-in; }
+    .hero a {
+      background-color: #e53935;
+      padding: 0.75rem 2rem;
+      border-radius: 999px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      animation: fadeIn 2.5s ease-in;
+      cursor: pointer;
+    }
+    .hero a:hover { background-color: #c62828; }
+    
+    .section-container {
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      background-color: rgba(255, 255, 255, 0.9);
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      flex-wrap: wrap;
+      padding: 6px 20px;
+      position: relative;
+      z-index: 2;
+    }
+     form {
+      display: flex; /* hide all by default */
+      flex-direction: column;
+      max-width: 360px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+    h2 {
+      text-align: center;
+      color: #d84315;
+      font-weight: 600;
+    }
+    h3 {
+      text-align: none;
+      color: #d84315;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      margin: 12px 0;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #ff6a00;
+    }
+     button {
+      padding: 12px;
+      background: linear-gradient(to right, #ee0979, #ff6a00);
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(to right, #ff3c00, #d1006f);
+    }
+    .request-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .request-card {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      width: 220px;
+    }
+   
+    .helpline-list {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 10px 20px;
+    }
+    .helpline-list p {
+      background: #fff3e0;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 8px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-weight: 600;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    /* Responsive */
+    @media (max-width: 700px) {
+      .form-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+	.four {
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      background-color: rgba(255, 255, 255, 0.8);
+      margin: 29px auto;
+      max-width: 950px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+	.donation-instructions {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .donation-type {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+    }
+	 .donation-type {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+    }
+    footer {
+      background-color: #263238;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+	 .donation-type strong {
+      color: #e53935;
+    }
+	.donation-type ul {
+      margin-left: 20px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slideshow-container">
+    <img src="1.png" class="active" alt="Slide 1" />
+    <img src="2.jpg" alt="Slide 2" />
+    <img src="3.jpg" alt="Slide 3" />
+  </div>
+
+  <header>
+    <h1>Donate Blood & Organ Today</h1>
+    <nav>
+      <a onclick="showSection('home')">About us</a>
+      <a onclick="showSection('request')">Request</a>
+      <a onclick="showSection('status')">Status</a>
+      <a onclick="showSection('doctors')">Doctors</a>
+      <a onclick="showSection('helpline')">Helpline</a>
+      <a onclick="showSection('feedback')">Feedback</a>
+      <a onclick="logout()">Logout</a>
+    </nav>
+  </header>
+  
+  <div id="mainApp">
+    <!-- Home Section -->
+    <section class="hero">
+      <h2>Welcome to Our Platform!</h2>
+      <p>Your ultimate destination for facilitating <strong>blood and organ donations</strong>. Our mission is to connect donors with recipients efficiently and transparently, saving lives and promoting health across communities.<br>Whether you're looking to <strong>register a donation request</strong> or seeking vital <strong>blood/organ resources</strong>, our platform is designed to make the process simple and secure. We believe in the power of giving and the impact it has on countless lives.</p>
+      <a onclick="showSection('request')">Make a Request</a>
+    </section>
+	
+	<section id="home" class="four" >
+        <h2 class="h2">how to request blood or an organ</h2>
+          <div class="donation-instructions">
+		   <div class="donation-type">
+            <p><ul> <li><strong>1. Go to the Request Section</strong><br>Navigate to the **Request** tab/menu on the website.</li>
+<li><strong>2. Fill in Your Personal Details</strong><br>
+
+   * Enter your full name.
+   * Provide a valid contact number where you can be reached.
+   * Select your date of birth.
+   * Enter your city or location.</li><br>
+
+ <li><strong>3. Select Request Type </strong><br>
+
+   * Choose whether you are requesting **Blood** or an **Organ**.</li><br>
+  
+ <li><strong>4. Provide Guardian Contact Number</strong><br>
+
+   * Enter a guardian or emergency contact number who can assist or verify your request.</li><br>
+
+<li><strong>5. Submit the Request</strong><br>
+
+   * Review all details carefully.
+   * Click the **Register Request** button to submit your request.</li><br>
+
+ <li><strong>6. Confirmation**</strong><br>
+
+   * After submission, you will receive a confirmation alert/message.
+   * Your request will be processed and visible under the **Status** section.</li></ul></p></div></div>
+	</section>
+    
+    <!-- Request Section -->
+   <section id="request" class="two" style="display:none;">
+      <h2>Register a Blood/Organ Request</h2>
+      <form id="requestForm">
+        <input type="text" name="name" placeholder="Full Name" required />
+        <input type="text" name="pno" placeholder="Contact Number" required />
+        <input type="date" name="dob" placeholder="Date of Birth" required />
+        <input type="text" name="city" placeholder="City" required />
+        <select name="reqType" id="reqType" required>
+          <option value="" disabled selected>Request Type</option>
+          <option value="Blood">Blood</option>
+          <option value="Organ">Organ</option>
+        </select>
+		<select name="bg" id="bg" required>
+          <option value="" disabled selected>Select Blood Group</option>
+          <option value="A+">A+</option><option value="A-">A-</option>
+          <option value="B+">B+</option><option value="B-">B-</option>
+          <option value="AB+">AB+</option><option value="AB-">AB-</option>
+          <option value="O+">O+</option><option value="O-">O-</option>
+        </select>
+        <select name="ot" id="ot" style="display:none;" required>
+          <option value="" disabled selected>Select Organ (if Organ)</option>
+          <option value="Kidney">Kidney</option>
+          <option value="Liver">Liver</option>
+          <option value="Heart">Heart</option>
+          <option value="Lung">Lung</option>
+        </select>
+        <input type="text" name="gn" placeholder="Guardian Number" required />
+        <button type="submit">Register Request</button>
+      </form>
+    </section>
+
+    <!-- Status Section -->
+   <section id="status" style="display:none;">
+	<div class="two">
+      <h2>Request Status</h2>
+      <form id="detailform" class="active">
+        <input type="text" name="name" placeholder="Enter Name" required />
+        <input type="text" name="number" placeholder="Contact number" required /> 
+        <button type="submit">Show</button>
+      </form>
+	  </div>
+	  <div class="three">
+	  <h3>Details:</h3>
+	<table id="requestTable" align="center">
+	<thead>
+	<tr>
+	<th>Name</th>
+	<th>Contact</th>
+	<th>City</th>
+	<th>Dob</th>
+	<th>Request</th>
+	<th>Blood</th>
+	<th>Organ</th>
+	<th>Status</th>
+	<th>Change</th>
+	</tr>
+	</thead>
+	<tbody></tbody>
+	</table>
+	</div>
+    </section>
+ 
+
+    <!-- Doctors Section -->
+    <section id="doctors" class="section-container" style="display:none;">
+      <h2>Our Doctors</h2>
+      <div class="doctor-list" id="doctorList">
+        <!-- Doctor cards will be inserted here -->
+      </div>
+    </section>
+
+    <!-- Helpline Section -->
+	 <section id="helpline" class="section-container" style="display:none;">
+      <h2>Helpline Contacts</h2>
+      <div class="helpline-list">
+        <p><strong>Emergency Blood Donation:</strong> 123-456-7890</p>
+		 <p><strong>Blood Bank:</strong> 1122334455</p>
+        <p><strong>Organ Donation Helpline:</strong> 987-654-3210</p>
+        <p><strong>24/7 Medical Support:</strong> 111-222-3333</p>
+        <p><strong>Near Hospitals:<a href="https://www.google.com/maps/search/hospital" target="_blank">View on Map</a></strong> </p>
+      </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section id="feedback" class="two" style="display:none;">
+      <h2>Feedback</h2>
+      <form id="feedbackForm">
+        <textarea placeholder="Your Feedback" required></textarea>
+        <button type="submit">Send Feedback</button>
+      </form>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 Donate Blood & Organ Today. All rights reserved.
+  </footer>
+
+<script>
+  // Background slideshow
+  const slides = document.querySelectorAll('.slideshow-container img');
+  let currentSlide = 0;
+  setInterval(() => {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide+1) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }, 4000);
+
+  // Show section function
+    function showSection(section) {
+      const sections = document.querySelectorAll('section');
+      sections.forEach(s => s.style.display = 'none');
+      document.getElementById(section).style.display = 'block';
+	if(section === 'doctors') loadDoctors();
+}
+  
+
+  // Show/hide organ select in request form
+  document.getElementById('reqType').addEventListener('change', function() {
+    const organSelect = document.getElementById('ot');
+    if (this.value === 'Organ') {
+      organSelect.style.display = 'block';
+      organSelect.required = true;
+    } else {
+      organSelect.style.display = 'none';
+      organSelect.required = false;
+      organSelect.value = '';
+    }
+  });
+
+   // request form submission
+  document.getElementById('requestForm').addEventListener('submit', function (e) 
+  {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('request_register.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+      alert(result);
+      this.reset();
+    })
+    .catch(error => {
+      alert('Error submitting blood donor: ' + error);
+    });
+  });
+
+ document.getElementById('detailform').addEventListener('submit', function(e) {
+   e.preventDefault();
+   const dformData = new FormData(this); 
+
+  fetch('request_get_requests.php', {
+    method: 'POST',
+    body: dformData
+  })
+  .then(response => response.json())
+  .then(requests => {
+    const tbody = document.querySelector('#requestTable tbody');
+    tbody.innerHTML = '';
+
+    if (requests.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9">No requests found</td></tr>';
+      return;
+    }
+
+    requests.forEach(r => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+	  <td>${r.full_name}</td>
+        <td>${r.contact}</td>
+        <td>${r.city}</td>
+		<td>${r.dob}</td>
+		<td>${r.type}</td>
+        <td>${r.blood}</td>
+        <td>${r.organ || '-'}</td>
+		<td>${r.status}</td>
+		<td><button id="available" value="${r.contact}" onclick="available(this)">Unavailable</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+});
+});
+
+  function available(button)
+  {
+    const formData = button.value;
+
+    fetch('update_request_available.php', {
+      method: 'POST',
+      body: new URLSearchParams({number:formData})
+    })
+    .then(response => response.text())
+    .then(result => {
+      alert(result);
+      button.disabled=true;
+	  button.innerText="Marked Unavailable";
+    })
+    .catch(error => {
+      alert('Error submitting request : ' + error);
+    });
+  }  
+  
+
+  // Sample doctors list load function (static)
+  function loadDoctors() {
+    const doctorList = document.getElementById('doctorList');
+    doctorList.innerHTML = '';
+    const doctors = [
+      {name: 'Dr. Anita Sharma', specialization: 'Hematologist', contact: '987-654-3211'},
+      {name: 'Dr. Rajesh Kumar', specialization: 'Transplant Surgeon', contact: '987-654-3212'},
+      {name: 'Dr. Meera Singh', specialization: 'Blood Bank Specialist', contact: '987-654-3213'},
+	  {name: ' Dr. Sanjay Gupta', specialization: 'Immunologist', contact: '987-654-3214'}
+    ];
+    doctors.forEach(d => {
+      const div = document.createElement('div');
+      div.style.background = '#fff';
+      div.style.padding = '12px';
+      div.style.margin = '10px 0';
+      div.style.borderRadius = '10px';
+      div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+      div.innerHTML = `<strong>${d.name}</strong><br/>Specialization: ${d.specialization}<br/>Contact: ${d.contact}`;
+      doctorList.appendChild(div);
+    });
+  }
+
+  // Feedback form
+  function feedback(){
+    alert('Thank you for your feedback!');
+   }
+
+  // Logout placeholder
+ function logout() {
+  if (confirm('Are you sure you want to logout?')) {
+    window.location.href = 'home1.html';
+  }
+}
+
+
+</script>
+
+</body>
+</html>
